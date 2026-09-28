@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Page settings -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Page title -->
+    <title>Admin Dashboard - ShoeHub</title>
+
+</head>
+
+
+<body class="bg-gray-100">
+
+    <!-- ============================== -->
+    <!-- Admin Navigation Bar -->
+    <!-- ============================== -->
+    <nav class="bg-gray-900 text-white px-6 py-4">
+
+        <div class="flex justify-between items-center">
+
+            <!-- ShoeHub Logo -->
+            <a href="/admin/dashboard" class="text-xl font-bold">
+                👟 SHOEHUB
+            </a>
+
+
+            <!-- Main Navigation -->
+            <div class="flex items-center gap-6">
+
+                <!-- Dashboard Link -->
+                <a
+                    href="/admin/dashboard"
+                    class="hover:text-gray-300"
+                >
+                    Dashboard
+                </a>
+
+
+                <!-- Products Link -->
+                <a
+                    href="/admin/products"
+                    class="hover:text-gray-300"
+                >
+                    Products
+                </a>
+
+
+                <!-- Orders Link -->
+                <a
+                    href="/admin/orders"
+                    class="hover:text-gray-300"
+                >
+                    Orders
+                </a>
+
+
+                <!-- ============================== -->
+                <!-- Admin Dropdown -->
+                <!-- ============================== -->
+                <div class="relative">
+
+                    <!-- Dropdown Button -->
+                    <button
+                        type="button"
+                        onclick="toggleAdminMenu()"
+                        class="flex items-center gap-2 hover:text-gray-300"
+                    >
+                        👤 Admin
+                        <span>▼</span>
+                    </button>
+
+
+                    <!-- Dropdown Menu -->
+                    <div
+                        id="adminMenu"
+                        class="hidden absolute right-0 mt-3 w-40 bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden"
+                    >
+
+                        <!-- My Profile -->
+                        <a
+                            href="/admin/profile"
+                            class="block px-4 py-3 hover:bg-gray-100"
+                        >
+                            My Profile
+                        </a>
+
+
+                        <!-- Logout -->
+                        <a
+                            href="/admin/logout"
+                            class="block px-4 py-3 hover:bg-gray-100"
+                        >
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ============================== -->
+    <!-- Main Content -->
+    <!-- ============================== -->
+    <main class="max-w-6xl mx-auto px-6 py-10">
+
+        <!-- Page Heading -->
+        <div class="mb-8">
+
+            <h1 class="text-3xl font-bold text-gray-800">
+                Admin Dashboard
+            </h1>
+
+            <p class="text-gray-500 mt-1">
+                Manage your ShoeHub store
+            </p>
+
+        </div>
+
+
+        <!-- ============================== -->
+        <!-- Dashboard Statistics -->
+        <!-- ============================== -->
+        <div class="grid md:grid-cols-2 gap-6 mb-10">
+
+            <!-- Total Products -->
+            <div class="bg-white rounded-xl shadow p-6">
+
+                <p class="text-gray-500">
+                    Total Products
+                </p>
+
+                <p class="text-3xl font-bold text-gray-800 mt-2">
+                    <%= totalProducts %>
+                </p>
+
+            </div>
+
+
+            <!-- Total Orders -->
+            <div class="bg-white rounded-xl shadow p-6">
+
+                <p class="text-gray-500">
+                    Total Orders
+                </p>
+
+                <p class="text-3xl font-bold text-gray-800 mt-2">
+                    <%= totalOrders %>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================== -->
+        <!-- Recent Orders -->
+        <!-- ============================== -->
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <!-- Recent Orders Heading -->
+            <div class="flex justify-between items-center mb-5">
+
+                <div>
+
+                    <h2 class="text-xl font-bold text-gray-800">
+                        Recent Orders
+                    </h2>
+
+                    <p class="text-gray-500 text-sm">
+                        Latest customer orders
+                    </p>
+
+                </div>
+
+
+                <!-- View All Orders -->
+                <a
+                    href="/admin/orders"
+                    class="text-blue-600 hover:underline"
+                >
+                    View All
+                </a>
+
+            </div>
+
+
+            <!-- Check if there are no orders -->
+            <% if (recentOrders.length === 0) { %>
+
+                <p class="text-gray-500">
+                    No orders yet.
+                </p>
+
+            <% } else { %>
+
+
+                <!-- Recent Orders Table -->
+                <div class="overflow-x-auto">
+
+                    <table class="w-full text-left">
+
+                        <!-- Table Header -->
+                        <thead class="border-b">
+
+                            <tr>
+
+                                <th class="py-3">
+                                    Order ID
+                                </th>
+
+                                <th class="py-3">
+                                    Customer
+                                </th>
+
+                                <th class="py-3">
+                                    Total
+                                </th>
+
+                                <th class="py-3">
+                                    Status
+                                </th>
+
+                                <th class="py-3">
+                                    Date
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <!-- Table Body -->
+                        <tbody>
+
+                            <% recentOrders.forEach(order => { %>
+
+                                <tr class="border-b">
+
+                                    <!-- Order ID -->
+                                    <td class="py-3">
+                                        #<%= order.id %>
+                                    </td>
+
+
+                                    <!-- Customer Name -->
+                                    <td class="py-3">
+                                        <%= order.name %>
+                                    </td>
+
+
+                                    <!-- Order Total -->
+                                    <td class="py-3">
+                                        ₱<%= Number(order.total).toLocaleString("en-PH", {
+                                            minimumFractionDigits: 2
+                                        }) %>
+                                    </td>
+
+
+                                    <!-- Order Status -->
+                                    <td class="py-3">
+                                        <%= order.status %>
+                                    </td>
+
+
+                                    <!-- Order Date -->
+                                    <td class="py-3">
+                                        <%= new Date(order.created_at).toLocaleString("en-PH") %>
+                                    </td>
+
+                                </tr>
+
+                            <% }) %>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            <% } %>
+
+        </div>
+
+    </main>
+
+
+    <!-- ============================== -->
+    <!-- Admin Dropdown JavaScript -->
+    <!-- ============================== -->
+    <script>
+
+        // Show or hide the admin dropdown menu
+        function toggleAdminMenu() {
+
+            const menu = document.getElementById("adminMenu");
+
+            menu.classList.toggle("hidden");
+        }
+
+    </script>
+
+</body>
+
+</html>

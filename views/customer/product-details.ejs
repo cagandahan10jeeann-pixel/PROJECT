@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title><%= product.name %> - ShoeHub</title>
+
+</head>
+
+<body class="bg-stone-100 text-stone-800">
+
+
+    <!-- Navbar -->
+    <nav class="bg-stone-800 text-white px-8 py-4">
+
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+
+            <!-- Logo -->
+            <a href="/" class="text-xl font-bold">
+                👟 SHOEHUB
+            </a>
+
+
+            <!-- Navigation -->
+            <div class="flex gap-6">
+
+                <a href="/" class="hover:text-stone-300">
+                    Home
+                </a>
+
+                <a href="/shoes" class="hover:text-stone-300">
+                    Shoes
+                </a>
+
+                <a href="/cart" class="hover:text-stone-300">
+                    Cart
+                </a>
+
+                <a href="/orders" class="hover:text-stone-300">
+                    My Orders
+                </a>
+
+                <a href="/login" class="hover:text-stone-300">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Product Details -->
+    <main class="max-w-6xl mx-auto px-6 py-10">
+
+        <div class="bg-white border border-stone-200 rounded-xl p-8">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+
+                <!-- Product Image -->
+                <div class="h-96 bg-stone-200 rounded-lg flex items-center justify-center">
+
+                    <% if (product.image) { %>
+
+                        <img
+                            src="/images/products/<%= product.image %>"
+                            alt="<%= product.name %>"
+                            class="w-full h-full object-cover rounded-lg"
+                        >
+
+                    <% } else { %>
+
+                        <span class="text-stone-500">
+                            Shoe Image
+                        </span>
+
+                    <% } %>
+
+                </div>
+
+
+                <!-- Product Information -->
+                <div>
+
+
+                    <!-- Category -->
+                    <p class="text-sm text-stone-500 mb-2">
+
+                        <%= product.category_name %>
+
+                    </p>
+
+
+                    <!-- Name -->
+                    <h1 class="text-3xl font-bold mb-4">
+
+                        <%= product.name %>
+
+                    </h1>
+
+
+                    <!-- Price -->
+                    <p class="text-2xl font-bold mb-6">
+
+                        ₱<span id="productPrice">0.00</span>
+
+                    </p>
+
+
+                    <!-- Description -->
+                    <div class="mb-6">
+
+                        <h2 class="font-semibold mb-2">
+                            Description
+                        </h2>
+
+                        <p class="text-stone-600">
+
+                            <%= product.description || "No description available." %>
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- Add to Cart Form -->
+                    <form action="/cart/add" method="POST">
+
+
+                        <!-- Product ID -->
+                        <input
+                            type="hidden"
+                            name="product_id"
+                            value="<%= product.id %>"
+                        >
+
+
+                        <!-- Selected Variant ID -->
+                        <input
+                            type="hidden"
+                            id="variant_id"
+                            name="variant_id"
+                            value=""
+                        >
+
+
+                        <!-- Color -->
+                        <div class="mb-6">
+
+                            <label class="block font-semibold mb-3">
+                                Color
+                            </label>
+
+                            <div
+                                id="colorOptions"
+                                class="flex flex-wrap gap-3"
+                            >
+                                <!-- Color buttons are created by JavaScript -->
+                            </div>
+
+                        </div>
+
+
+                        <!-- Size -->
+                        <div class="mb-6">
+
+                            <label class="block font-semibold mb-3">
+                                Size
+                            </label>
+
+                            <div
+                                id="sizeOptions"
+                                class="flex flex-wrap gap-3"
+                            >
+                                <!-- Size buttons are created by JavaScript -->
+                            </div>
+
+                        </div>
+
+
+                        <!-- Available Stock -->
+                        <div class="mb-5">
+
+                            <p class="font-semibold">
+
+                                Available Stock:
+
+                                <span id="availableStock">
+                                    0
+                                </span>
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- Quantity -->
+                        <div class="mb-6">
+
+                            <label
+                                for="quantity"
+                                class="block font-semibold mb-2"
+                            >
+                                Quantity
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                value="1"
+                                min="1"
+                                max="1"
+                                class="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-500"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Add to Cart -->
+                        <button
+                            type="submit"
+                            id="addToCartButton"
+                            disabled
+                            class="w-full bg-stone-400 text-white py-3 rounded-lg cursor-not-allowed"
+                        >
+                            Add to Cart
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- Variant Selection -->
+    <script>
+
+        // Get all variants from the database
+        const variants = <%- JSON.stringify(variants) %>;
+
+
+        // Get page elements
+        const colorOptions =
+            document.getElementById("colorOptions");
+
+        const sizeOptions =
+            document.getElementById("sizeOptions");
+
+        const availableStock =
+            document.getElementById("availableStock");
+
+        const quantityInput =
+            document.getElementById("quantity");
+
+        const variantIdInput =
+            document.getElementById("variant_id");
+
+        const addToCartButton =
+            document.getElementById("addToCartButton");
+
+        const productPrice =
+            document.getElementById("productPrice");
+
+
+        // Store selected color and size
+        let selectedColor = "";
+
+        let selectedSize = "";
+
+
+        // Get unique colors
+        const colors = [
+            ...new Set(
+                variants.map(variant => variant.color)
+            )
+        ];
+
+
+        // Get unique sizes
+        const sizes = [
+            ...new Set(
+                variants.map(variant => variant.size)
+            )
+        ];
+
+
+        // Create color buttons
+        colors.forEach(color => {
+
+            const button = document.createElement("button");
+
+            button.type = "button";
+
+            button.textContent = color;
+
+            button.className =
+                "px-5 py-2 border border-stone-300 rounded-lg bg-white hover:bg-stone-200";
+
+
+            button.addEventListener("click", () => {
+
+                selectedColor = color;
+
+                selectedSize = "";
+
+                updateColors();
+
+                updateSizes();
+
+                updateVariant();
+
+            });
+
+
+            colorOptions.appendChild(button);
+
+        });
+
+
+        // Create size buttons
+        sizes.forEach(size => {
+
+            const button = document.createElement("button");
+
+            button.type = "button";
+
+            button.textContent = size;
+
+            button.className =
+                "px-5 py-2 border border-stone-300 rounded-lg bg-white hover:bg-stone-200";
+
+
+            button.addEventListener("click", () => {
+
+                selectedSize = size;
+
+                updateSizes();
+
+                updateColors();
+
+                updateVariant();
+
+            });
+
+
+            sizeOptions.appendChild(button);
+
+        });
+
+
+        // Update color buttons
+        function updateColors() {
+
+            const colorButtons = colorOptions.children;
+
+
+            for (const button of colorButtons) {
+
+                const color = button.textContent;
+
+
+                const available = variants.some(variant => {
+
+                    if (variant.color !== color) {
+                        return false;
+                    }
+
+                    if (variant.stock <= 0) {
+                        return false;
+                    }
+
+                    if (
+                        selectedSize &&
+                        variant.size != selectedSize
+                    ) {
+                        return false;
+                    }
+
+                    return true;
+
+                });
+
+
+                button.disabled = !available;
+
+
+                if (!available) {
+
+                    button.className =
+                        "px-5 py-2 border border-stone-200 rounded-lg bg-stone-100 text-stone-400 cursor-not-allowed";
+
+                } else if (color === selectedColor) {
+
+                    button.className =
+                        "px-5 py-2 border-2 border-stone-800 rounded-lg bg-stone-800 text-white";
+
+                } else {
+
+                    button.className =
+                        "px-5 py-2 border border-stone-300 rounded-lg bg-white hover:bg-stone-200";
+
+                }
+
+            }
+
+        }
+
+
+        // Update size buttons
+        function updateSizes() {
+
+            const sizeButtons = sizeOptions.children;
+
+
+            for (const button of sizeButtons) {
+
+                const size = button.textContent;
+
+
+                const available = variants.some(variant => {
+
+                    if (variant.size != size) {
+                        return false;
+                    }
+
+                    if (variant.stock <= 0) {
+                        return false;
+                    }
+
+                    if (
+                        selectedColor &&
+                        variant.color !== selectedColor
+                    ) {
+                        return false;
+                    }
+
+                    return true;
+
+                });
+
+
+                button.disabled = !available;
+
+
+                if (!available) {
+
+                    button.className =
+                        "px-5 py-2 border border-stone-200 rounded-lg bg-stone-100 text-stone-400 cursor-not-allowed";
+
+                } else if (size == selectedSize) {
+
+                    button.className =
+                        "px-5 py-2 border-2 border-stone-800 rounded-lg bg-stone-800 text-white";
+
+                } else {
+
+                    button.className =
+                        "px-5 py-2 border border-stone-300 rounded-lg bg-white hover:bg-stone-200";
+
+                }
+
+            }
+
+        }
+
+
+        // Find the selected variant
+        function updateVariant() {
+
+            const selectedVariant = variants.find(variant =>
+
+                variant.color === selectedColor &&
+
+                variant.size == selectedSize
+
+            );
+
+
+            // No complete selection
+            if (!selectedVariant) {
+
+                productPrice.textContent = "0.00";
+
+                availableStock.textContent = "0";
+
+                variantIdInput.value = "";
+
+                quantityInput.max = 1;
+
+                addToCartButton.disabled = true;
+
+                addToCartButton.className =
+                    "w-full bg-stone-400 text-white py-3 rounded-lg cursor-not-allowed";
+
+                return;
+
+            }
+
+
+            // Show variant price
+            productPrice.textContent =
+                Number(selectedVariant.price).toLocaleString(
+                    "en-PH",
+                    {
+                        minimumFractionDigits: 2
+                    }
+                );
+
+
+            // Show variant stock
+            availableStock.textContent =
+                selectedVariant.stock;
+
+
+            // Send variant ID to server
+            variantIdInput.value =
+                selectedVariant.id;
+
+
+            // Set maximum quantity
+            quantityInput.max =
+                selectedVariant.stock;
+
+
+            // Reset quantity if needed
+            if (
+                Number(quantityInput.value) < 1 ||
+                Number(quantityInput.value) > selectedVariant.stock
+            ) {
+
+                quantityInput.value = 1;
+
+            }
+
+
+            // Enable Add to Cart
+            if (selectedVariant.stock > 0) {
+
+                addToCartButton.disabled = false;
+
+                addToCartButton.className =
+                    "w-full bg-stone-800 text-white py-3 rounded-lg hover:bg-stone-700";
+
+            } else {
+
+                addToCartButton.disabled = true;
+
+                addToCartButton.className =
+                    "w-full bg-stone-400 text-white py-3 rounded-lg cursor-not-allowed";
+
+            }
+
+        }
+
+
+        // Check quantity
+        quantityInput.addEventListener("input", () => {
+
+            const selectedVariant = variants.find(
+                variant => variant.id == variantIdInput.value
+            );
+
+
+            if (!selectedVariant) {
+                return;
+            }
+
+
+            if (Number(quantityInput.value) < 1) {
+
+                quantityInput.value = 1;
+
+            }
+
+
+            if (
+                Number(quantityInput.value) >
+                selectedVariant.stock
+            ) {
+
+                quantityInput.value =
+                    selectedVariant.stock;
+
+            }
+
+        });
+
+
+        // Show initial options
+        updateColors();
+
+        updateSizes();
+
+    </script>
+
+</body>
+
+</html>

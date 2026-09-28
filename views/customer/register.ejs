@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>ShoeHub - Register</title>
+</head>
+
+<body class="bg-stone-100 min-h-screen">
+
+    <!-- Register Section -->
+    <div class="flex items-center justify-center px-6 py-10">
+
+        <!-- Register Card -->
+        <!-- Same compact card style as the Login page -->
+        <div class="bg-white w-full max-w-md rounded-xl shadow-lg p-8">
+
+            <!-- ShoeHub Logo -->
+            <h1 class="text-3xl font-bold text-stone-900 text-center mb-3">
+                👟 SHOEHUB
+            </h1>
+
+            <!-- Register Title -->
+            <h2 class="text-3xl font-bold text-stone-800 text-center mb-8">
+                Register
+            </h2>
+
+            <!-- Register Form -->
+            <form action="/register" method="POST">
+
+                <!-- First Name -->
+                <div class="mb-5">
+
+                    <label
+                        for="first_name"
+                        class="block text-stone-700 font-medium mb-2"
+                    >
+                        First Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="first_name"
+                        name="first_name"
+                        required
+                        class="w-full border border-stone-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                    >
+
+                </div>
+
+                <!-- Last Name -->
+                <div class="mb-5">
+
+                    <label
+                        for="last_name"
+                        class="block text-stone-700 font-medium mb-2"
+                    >
+                        Last Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="last_name"
+                        name="last_name"
+                        required
+                        class="w-full border border-stone-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                    >
+
+                </div>
+
+                <!-- Email -->
+                <div class="mb-5">
+
+                    <label
+                        for="email"
+                        class="block text-stone-700 font-medium mb-2"
+                    >
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        class="w-full border border-stone-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                    >
+
+                </div>
+
+                <!-- Password -->
+                <div class="mb-5">
+
+                    <label
+                        for="password"
+                        class="block text-stone-700 font-medium mb-2"
+                    >
+                        Password
+                    </label>
+
+                    <div class="relative">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                            class="w-full border border-stone-300 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                        >
+
+                        <!-- Password Visibility Button -->
+                        <button
+                            type="button"
+                            onclick="showPassword('password', 'passwordEye')"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-800"
+                        >
+
+                            <!-- Eye Icon -->
+                            <svg
+                                id="passwordEye"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                            >
+
+                                <!-- Eye -->
+                                <path
+                                    d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"
+                                />
+
+                                <!-- Eye Circle -->
+                                <path
+                                    d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"
+                                />
+
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+                    <!-- Password Requirement -->
+                    <p class="text-sm text-stone-500 mt-2">
+                        At least 8 characters, with uppercase, lowercase, number, and special character.
+                    </p>
+
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-6">
+
+                    <label
+                        for="confirm_password"
+                        class="block text-stone-700 font-medium mb-2"
+                    >
+                        Confirm Password
+                    </label>
+
+                    <div class="relative">
+
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            required
+                            class="w-full border border-stone-300 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                        >
+
+                        <!-- Confirm Password Visibility Button -->
+                        <button
+                            type="button"
+                            onclick="showPassword('confirm_password', 'confirmPasswordEye')"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-800"
+                        >
+
+                            <!-- Eye Icon -->
+                            <svg
+                                id="confirmPasswordEye"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                            >
+
+                                <!-- Eye -->
+                                <path
+                                    d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"
+                                />
+
+                                <!-- Eye Circle -->
+                                <path
+                                    d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"
+                                />
+
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Register Button -->
+                <button
+                    type="submit"
+                    class="w-full bg-stone-800 text-white py-3 rounded-lg font-semibold hover:bg-stone-900 transition"
+                >
+                    Register
+                </button>
+
+            </form>
+
+            <!-- Login Link -->
+            <p class="text-center text-stone-500 mt-6">
+
+                Already have an account?
+
+                <a
+                    href="/login"
+                    class="text-stone-900 font-semibold hover:underline"
+                >
+                    Login
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Password Visibility JavaScript -->
+    <script>
+
+        // Show or hide the password
+        // Also changes the eye icon.
+        function showPassword(inputId, eyeId) {
+
+            const input = document.getElementById(inputId);
+            const eye = document.getElementById(eyeId);
+
+            if (input.type === "password") {
+
+                // Show password
+                input.type = "text";
+
+                // Change to eye-slash icon
+                eye.innerHTML = `
+                    <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/>
+
+                    <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/>
+
+                    <path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>
+                `;
+
+            } else {
+
+                // Hide password
+                input.type = "password";
+
+                // Change back to eye icon
+                eye.innerHTML = `
+                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+
+                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+                `;
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

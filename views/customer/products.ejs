@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>Shoes - ShoeHub</title>
+
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- ============================== -->
+    <!-- Customer Navigation Bar -->
+    <!-- ============================== -->
+
+    <nav class="bg-gray-900 text-white px-6 py-4">
+
+        <div class="flex justify-between items-center">
+
+            <!-- ShoeHub Logo -->
+            <a href="/" class="text-xl font-bold">
+                👟 SHOEHUB
+            </a>
+
+            <!-- Main Navigation -->
+            <div class="flex items-center gap-6">
+
+                <!-- Home -->
+                <a
+                    href="/"
+                    class="hover:text-gray-300"
+                >
+                    Home
+                </a>
+
+                <!-- Shoes -->
+                <a
+                    href="/shoes"
+                    class="hover:text-gray-300"
+                >
+                    Shoes
+                </a>
+
+                <% if (user) { %>
+
+                    <!-- Cart -->
+                    <a
+                        href="/cart"
+                        class="hover:text-gray-300"
+                    >
+                        Cart
+                    </a>
+
+                    <!-- My Orders -->
+                    <a
+                        href="/orders"
+                        class="hover:text-gray-300"
+                    >
+                        My Orders
+                    </a>
+
+                    <!-- Customer Dropdown -->
+                    <div class="relative">
+
+                        <button
+                            type="button"
+                            onclick="toggleUserMenu()"
+                            class="flex items-center gap-2 hover:text-gray-300"
+                        >
+                            👤
+                            <%= user.first_name %>
+                            <span>▼</span>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div
+                            id="userMenu"
+                            class="hidden absolute right-0 mt-3 w-40 bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden z-50"
+                        >
+
+                            <!-- My Profile -->
+                            <a
+                                href="/profile"
+                                class="block px-4 py-3 hover:bg-gray-100"
+                            >
+                                My Profile
+                            </a>
+
+                            <!-- Logout -->
+                            <a
+                                href="/logout"
+                                class="block px-4 py-3 hover:bg-gray-100"
+                            >
+                                Logout
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                <% } else { %>
+
+                    <!-- Login -->
+                    <a
+                        href="/login"
+                        class="hover:text-gray-300"
+                    >
+                        Login
+                    </a>
+
+                    <!-- Register -->
+                    <a
+                        href="/register"
+                        class="hover:text-gray-300"
+                    >
+                        Register
+                    </a>
+
+                <% } %>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ============================== -->
+    <!-- Shoes Section -->
+    <!-- ============================== -->
+
+    <div class="max-w-7xl mx-auto px-6 py-10">
+
+        <!-- Page Title -->
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">
+            Shoes
+        </h1>
+
+
+        <!-- ============================== -->
+        <!-- Search -->
+        <!-- ============================== -->
+
+        <form
+            action="/shoes"
+            method="GET"
+            class="mb-6"
+        >
+
+            <input
+                type="text"
+                name="search"
+                value="<%= search %>"
+                placeholder="Search shoes..."
+                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+
+        </form>
+
+
+        <!-- ============================== -->
+<!-- Category Filters -->
+<!-- ============================== -->
+
+<div class="flex flex-wrap gap-3 mb-8">
+
+    <!-- All -->
+    <a
+        href="/shoes"
+        class="px-4 py-2 rounded-lg bg-gray-800 text-white hover:bg-gray-700"
+    >
+        All
+    </a>
+
+    <!-- Sneakers -->
+    <a
+        href="/shoes?category=Sneakers"
+        class="px-4 py-2 rounded-lg bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+    >
+        Sneakers
+    </a>
+
+    <!-- Running Shoes -->
+    <a
+        href="/shoes?category=Running%20Shoes"
+        class="px-4 py-2 rounded-lg bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+    >
+        Running Shoes
+    </a>
+
+    <!-- Basketball Shoes -->
+    <a
+        href="/shoes?category=Basketball%20Shoes"
+        class="px-4 py-2 rounded-lg bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+    >
+        Basketball Shoes
+    </a>
+
+    <!-- Casual Shoes -->
+    <a
+        href="/shoes?category=Casual%20Shoes"
+        class="px-4 py-2 rounded-lg bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+    >
+        Casual Shoes
+    </a>
+
+    <!-- Formal Shoes -->
+    <a
+        href="/shoes?category=Formal%20Shoes"
+        class="px-4 py-2 rounded-lg bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+    >
+        Formal Shoes
+    </a>
+
+</div>
+
+        <!-- ============================== -->
+        <!-- Product Cards -->
+        <!-- ============================== -->
+
+        <% if (products.length === 0) { %>
+
+            <!-- No Results -->
+            <div class="bg-white rounded-xl shadow p-8 text-center">
+
+                <p class="text-gray-600">
+                    No shoes found.
+                </p>
+
+            </div>
+
+        <% } else { %>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <% products.forEach(product => { %>
+
+                    <!-- Product Card -->
+                    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+                        <!-- Product Image -->
+                        <div class="h-56 bg-gray-200">
+
+                            <% if (product.image) { %>
+
+                                <img
+                                    src="/images/products/<%= product.image %>"
+                                    alt="<%= product.name %>"
+                                    class="w-full h-full object-cover"
+                                >
+
+                            <% } else { %>
+
+                                <div class="h-full flex items-center justify-center text-gray-500">
+                                    Shoe Image
+                                </div>
+
+                            <% } %>
+
+                        </div>
+
+
+                        <!-- Product Information -->
+                        <div class="p-6">
+
+                            <!-- Shoe Name -->
+                            <h2 class="text-xl font-semibold text-gray-800 mb-2">
+                                <%= product.name %>
+                            </h2>
+
+                            <!-- Category -->
+                            <p class="text-sm text-gray-500 mb-2">
+                                <%= product.category_name %>
+                            </p>
+
+                            <!-- Price -->
+                            <p class="text-lg font-bold text-gray-800 mb-4">
+                                ₱<%= Number(product.price).toLocaleString("en-PH", {
+                                    minimumFractionDigits: 2
+                                }) %>
+                            </p>
+
+                            <!-- View Shoe -->
+                            <a
+                                href="/shoes/<%= product.id %>"
+                                class="text-blue-600 hover:underline"
+                            >
+                                View Shoe
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- Customer Dropdown JavaScript -->
+    <!-- ============================== -->
+
+    <script>
+
+        // Show or hide the customer dropdown menu
+        function toggleUserMenu() {
+
+            const menu = document.getElementById("userMenu");
+
+            menu.classList.toggle("hidden");
+
+        }
+
+    </script>
+
+</body>
+
+</html>

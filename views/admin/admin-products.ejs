@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>Admin Products - ShoeHub</title>
+
+</head>
+
+<body class="bg-gray-100">
+
+
+    <!-- Admin Navigation Bar -->
+    <nav class="bg-gray-900 text-white px-6 py-4">
+
+        <div class="flex justify-between items-center">
+
+            <!-- Logo -->
+            <a
+                href="/admin/dashboard"
+                class="text-xl font-bold"
+            >
+                👟 SHOEHUB
+            </a>
+
+
+            <!-- Navigation Links -->
+            <div class="flex items-center gap-6">
+
+                <a
+                    href="/admin/dashboard"
+                    class="hover:text-gray-300"
+                >
+                    Dashboard
+                </a>
+
+                <a
+                    href="/admin/products"
+                    class="hover:text-gray-300"
+                >
+                    Products
+                </a>
+
+                <a
+                    href="/admin/orders"
+                    class="hover:text-gray-300"
+                >
+                    Orders
+                </a>
+
+
+                <!-- Admin Dropdown -->
+                <div class="relative">
+
+                    <button
+                        type="button"
+                        onclick="toggleAdminMenu()"
+                        class="flex items-center gap-2 hover:text-gray-300"
+                    >
+                        👤 Admin
+                        <span>▼</span>
+                    </button>
+
+
+                    <!-- Dropdown Menu -->
+                    <div
+                        id="adminMenu"
+                        class="hidden absolute right-0 mt-3 w-40 bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden"
+                    >
+
+                        <a
+                            href="/admin/profile"
+                            class="block px-4 py-3 hover:bg-gray-100"
+                        >
+                            My Profile
+                        </a>
+
+                        <a
+                            href="/admin/logout"
+                            class="block px-4 py-3 hover:bg-gray-100"
+                        >
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-6 py-10">
+
+
+        <!-- Page Header -->
+        <div class="flex justify-between items-center mb-6">
+
+            <div>
+
+                <h1 class="text-3xl font-bold text-gray-800">
+                    Products
+                </h1>
+
+                <p class="text-gray-500 mt-1">
+                    Manage ShoeHub products
+                </p>
+
+            </div>
+
+
+            <!-- Add Shoe Button -->
+            <a
+                href="/admin/products/create"
+                class="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700"
+            >
+                + Add Shoe
+            </a>
+
+        </div>
+
+
+
+        <!-- Category Filter -->
+        <div class="mb-6">
+
+            <form
+                action="/admin/products"
+                method="GET"
+                class="flex items-center gap-3"
+            >
+
+                <!-- Category Label -->
+                <label
+                    for="category"
+                    class="font-medium text-gray-700"
+                >
+                    Filter by Category:
+                </label>
+
+
+                <!-- Category Dropdown -->
+                <select
+                    id="category"
+                    name="category"
+                    onchange="this.form.submit()"
+                    class="border border-gray-300 rounded-lg px-4 py-2 bg-white"
+                >
+
+                    <!-- All Categories -->
+                    <option value="">
+                        All Categories
+                    </option>
+
+
+                    <!-- Category Options -->
+                    <% categories.forEach(categoryItem => { %>
+
+                        <option
+                            value="<%= categoryItem.name %>"
+                            <%= category === categoryItem.name ? "selected" : "" %>
+                        >
+                            <%= categoryItem.name %>
+                        </option>
+
+                    <% }); %>
+
+                </select>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- Products Table -->
+        <div class="bg-white rounded-lg shadow overflow-x-auto">
+
+            <table class="w-full text-left">
+
+
+                <!-- Table Header -->
+                <thead class="bg-gray-100 border-b">
+
+                    <tr>
+
+                        <th class="px-6 py-4">
+                            Image
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Shoe Name
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Category
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Price
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Stock
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Color
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Size
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <!-- Table Body -->
+                <tbody>
+
+                    <% products.forEach(product => { %>
+
+                        <tr class="border-b hover:bg-gray-50">
+
+
+                            <!-- Product Image -->
+                            <td class="px-6 py-4">
+
+                                <% if (product.image) { %>
+
+                                    <img
+                                        src="/images/products/<%= product.image %>"
+                                        alt="<%= product.name %>"
+                                        class="w-16 h-16 object-cover rounded"
+                                    >
+
+                                <% } else { %>
+
+                                    <span class="text-gray-400">
+                                        No Image
+                                    </span>
+
+                                <% } %>
+
+                            </td>
+
+
+
+                            <!-- Shoe Name -->
+                            <td class="px-6 py-4 font-medium text-gray-800">
+
+                                <%= product.name %>
+
+                            </td>
+
+
+
+                            <!-- Category -->
+                            <td class="px-6 py-4">
+
+                                <%= product.category_name %>
+
+                            </td>
+
+
+
+                            <!-- Price -->
+                            <td class="px-6 py-4">
+
+                                ₱<%= Number(product.price).toLocaleString("en-PH", {
+                                    minimumFractionDigits: 2
+                                }) %>
+
+                            </td>
+
+
+
+                            <!-- Stock -->
+                            <td class="px-6 py-4">
+
+                                <%= product.stock %>
+
+                            </td>
+
+
+
+                            <!-- Color -->
+                            <td class="px-6 py-4">
+
+                                <%= product.color %>
+
+                            </td>
+
+
+
+                            <!-- Size -->
+                            <td class="px-6 py-4">
+
+                                <%= product.size %>
+
+                            </td>
+
+
+
+                            <!-- Actions -->
+                            <td class="px-6 py-4 whitespace-nowrap">
+
+
+                                <!-- Edit Variant -->
+                                <a
+                                    href="/admin/products/edit/<%= product.variant_id %>"
+                                    class="text-blue-600 hover:underline mr-4"
+                                >
+                                    Edit
+                                </a>
+
+
+                                <!-- Delete Whole Shoe -->
+                                <form
+                                    action="/admin/products/delete/<%= product.variant_id %>"
+                                    method="POST"
+                                    class="inline"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="text-red-600 hover:underline"
+                                        onclick="return confirm('Are you sure you want to delete this shoe? All variants will also be deleted.')"
+                                    >
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    <% }); %>
+
+
+
+                    <!-- No Products -->
+                    <% if (products.length === 0) { %>
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="px-6 py-8 text-center text-gray-500"
+                            >
+                                No products found.
+                            </td>
+
+                        </tr>
+
+                    <% } %>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- JavaScript -->
+    <script>
+
+        // Show or hide the admin dropdown menu
+        function toggleAdminMenu() {
+
+            const menu = document.getElementById("adminMenu");
+
+            menu.classList.toggle("hidden");
+
+        }
+
+    </script>
+
+</body>
+
+</html>

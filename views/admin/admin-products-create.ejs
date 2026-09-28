@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <!-- Page Settings -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Page Title -->
+    <title>Add Shoe - ShoeHub</title>
+
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+
+    <!-- ============================== -->
+    <!-- Admin Navigation Bar -->
+    <!-- ============================== -->
+
+    <nav class="bg-gray-900 text-white px-6 py-4">
+
+        <div class="flex justify-between items-center">
+
+            <!-- ShoeHub Logo -->
+            <a
+                href="/admin/dashboard"
+                class="text-xl font-bold"
+            >
+                👟 SHOEHUB
+            </a>
+
+
+            <!-- Main Navigation -->
+            <div class="flex items-center gap-6">
+
+                <!-- Dashboard -->
+                <a
+                    href="/admin/dashboard"
+                    class="hover:text-gray-300"
+                >
+                    Dashboard
+                </a>
+
+
+                <!-- Products -->
+                <a
+                    href="/admin/products"
+                    class="hover:text-gray-300"
+                >
+                    Products
+                </a>
+
+
+                <!-- Orders -->
+                <a
+                    href="/admin/orders"
+                    class="hover:text-gray-300"
+                >
+                    Orders
+                </a>
+
+
+                <!-- Admin Dropdown -->
+                <div class="relative">
+
+                    <button
+                        type="button"
+                        onclick="toggleAdminMenu()"
+                        class="flex items-center gap-2 hover:text-gray-300"
+                    >
+                        👤 Admin
+                        <span>▼</span>
+                    </button>
+
+
+                    <!-- Dropdown Menu -->
+                    <div
+                        id="adminMenu"
+                        class="hidden absolute right-0 mt-3 w-40 bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden z-50"
+                    >
+
+                        <!-- My Profile -->
+                        <a
+                            href="/admin/profile"
+                            class="block px-4 py-3 hover:bg-gray-100"
+                        >
+                            My Profile
+                        </a>
+
+
+                        <!-- Logout -->
+                        <a
+                            href="/admin/logout"
+                            class="block px-4 py-3 hover:bg-gray-100"
+                        >
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ============================== -->
+    <!-- Main Content -->
+    <!-- ============================== -->
+
+    <div class="max-w-5xl mx-auto px-6 py-10">
+
+
+        <!-- ============================== -->
+        <!-- Back Button -->
+        <!-- ============================== -->
+
+
+
+
+        <!-- ============================== -->
+        <!-- Page Heading -->
+        <!-- ============================== -->
+
+        <div class="mb-6">
+
+            <h1 class="text-3xl font-bold text-gray-800">
+                Add Shoe
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                Add a new shoe to the ShoeHub products.
+            </p>
+
+        </div>
+
+
+
+        <!-- ============================== -->
+        <!-- Add Shoe Card -->
+        <!-- ============================== -->
+
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <form
+                action="/admin/products/create"
+                method="POST"
+            >
+
+
+                <!-- ============================== -->
+                <!-- Shoe Name -->
+                <!-- ============================== -->
+
+                <div class="mb-5">
+
+                    <label
+                        class="block font-semibold text-gray-700 mb-2"
+                    >
+                        Shoe Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        required
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                        placeholder="Enter shoe name"
+                    >
+
+                </div>
+
+
+
+                <!-- ============================== -->
+                <!-- Category -->
+                <!-- ============================== -->
+
+                <div class="mb-5">
+
+                    <label
+                        class="block font-semibold text-gray-700 mb-2"
+                    >
+                        Category
+                    </label>
+
+
+                    <div class="flex gap-3">
+
+                        <!-- Category Dropdown -->
+                        <select
+                            id="category"
+                            name="category_id"
+                            required
+                            class="flex-1 border border-gray-300 rounded-lg px-4 py-3 bg-white"
+                        >
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+
+                            <!-- Display Categories -->
+                            <% categories.forEach(category => { %>
+
+                                <option value="<%= category.id %>">
+                                    <%= category.name %>
+                                </option>
+
+                            <% }) %>
+
+                        </select>
+
+
+                        <!-- Add New Category -->
+                        <button
+                            type="button"
+                            onclick="openCategoryModal()"
+                            class="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 whitespace-nowrap"
+                        >
+                            + Add New Category
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ============================== -->
+                <!-- Price / Stock / Color / Size -->
+                <!-- ============================== -->
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-5">
+
+
+                    <!-- Price -->
+                    <div>
+
+                        <label
+                            class="block font-semibold text-gray-700 mb-2"
+                        >
+                            Price
+                        </label>
+
+                        <input
+                            type="number"
+                            name="price"
+                            step="0.01"
+                            min="0"
+                            required
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                            placeholder="₱0.00"
+                        >
+
+                    </div>
+
+
+                    <!-- Stock -->
+                    <div>
+
+                        <label
+                            class="block font-semibold text-gray-700 mb-2"
+                        >
+                            Stock
+                        </label>
+
+                        <input
+                            type="number"
+                            name="stock"
+                            min="0"
+                            required
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                            placeholder="0"
+                        >
+
+                    </div>
+
+
+                    <!-- Color -->
+                    <div>
+
+                        <label
+                            class="block font-semibold text-gray-700 mb-2"
+                        >
+                            Color
+                        </label>
+
+                        <input
+                            type="text"
+                            name="color"
+                            required
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                            placeholder="Black"
+                        >
+
+                    </div>
+
+
+                    <!-- Size -->
+                    <div>
+
+                        <label
+                            class="block font-semibold text-gray-700 mb-2"
+                        >
+                            Size
+                        </label>
+
+                        <input
+                            type="text"
+                            name="size"
+                            required
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                            placeholder="40-44"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ============================== -->
+                <!-- Description -->
+                <!-- ============================== -->
+
+                <div class="mb-5">
+
+                    <label
+                        class="block font-semibold text-gray-700 mb-2"
+                    >
+                        Description
+                    </label>
+
+                    <textarea
+                        name="description"
+                        rows="4"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                        placeholder="Enter shoe description"
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- ============================== -->
+                <!-- Product Image -->
+                <!-- ============================== -->
+
+                <div class="mb-6">
+
+                    <label
+                        class="block font-semibold text-gray-700 mb-2"
+                    >
+                        Product Image
+                    </label>
+
+                    <input
+                        type="text"
+                        name="image"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3"
+                        placeholder="Example: classic-white-sneakers.jpg"
+                    >
+
+                    <p class="text-sm text-gray-500 mt-2">
+                        Enter the image filename from public/images/products.
+                    </p>
+
+                </div>
+
+
+
+                <!-- ============================== -->
+                <!-- Form Buttons -->
+                <!-- ============================== -->
+
+                <div class="flex gap-3">
+
+                    <!-- Add Shoe -->
+                    <button
+                        type="submit"
+                        class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+                    >
+                        Add Shoe
+                    </button>
+
+
+                    <!-- Cancel -->
+                    <a
+                        href="/admin/products"
+                        class="bg-gray-300 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-400"
+                    >
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ============================== -->
+        <!-- Category Management Card -->
+        <!-- ============================== -->
+
+        <div class="bg-white rounded-xl shadow p-6 mt-6">
+
+
+            <!-- Category Management Header -->
+            <div class="mb-4">
+
+                <h2 class="text-xl font-bold text-gray-800">
+                    Category Management
+                </h2>
+
+                <p class="text-gray-500 text-sm mt-1">
+                    Manage the categories available for your shoes.
+                </p>
+
+            </div>
+
+
+            <!-- Category List -->
+            <div class="border rounded-lg divide-y">
+
+                <% categories.forEach(category => { %>
+
+                    <!-- Category Row -->
+                    <div class="flex items-center justify-between px-4 py-3">
+
+
+                        <!-- Category Name -->
+                        <span class="font-medium text-gray-800">
+                            <%= category.name %>
+                        </span>
+
+
+                        <!-- Category Actions -->
+                        <div class="flex items-center gap-4">
+
+
+                            <!-- Edit Category -->
+                            <button
+                                type="button"
+                                onclick="editCategory(<%= category.id %>, '<%= category.name.replace(/'/g, "\\'") %>')"
+                                class="text-blue-600 hover:underline"
+                            >
+                                Edit
+                            </button>
+
+
+                            <!-- Delete Category -->
+                            <form
+                                action="/admin/categories/delete/<%= category.id %>"
+                                method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete this category?')"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="text-red-600 hover:underline"
+                                >
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ============================== -->
+    <!-- Add Category Modal -->
+    <!-- ============================== -->
+
+    <div
+        id="categoryModal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 z-50"
+    >
+
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
+
+
+            <!-- Modal Title -->
+            <h2 class="text-xl font-bold text-gray-800 mb-5">
+                Add New Category
+            </h2>
+
+
+            <!-- Category Name -->
+            <input
+                type="text"
+                id="newCategoryName"
+                class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-5"
+                placeholder="Enter category name"
+            >
+
+
+            <!-- Modal Buttons -->
+            <div class="flex justify-end gap-3">
+
+                <!-- Cancel -->
+                <button
+                    type="button"
+                    onclick="closeCategoryModal()"
+                    class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
+                >
+                    Cancel
+                </button>
+
+
+                <!-- Save -->
+                <button
+                    type="button"
+                    onclick="addCategory()"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                >
+                    Save Category
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ============================== -->
+    <!-- Edit Category Modal -->
+    <!-- ============================== -->
+
+    <div
+        id="editCategoryModal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 z-50"
+    >
+
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
+
+
+            <!-- Modal Title -->
+            <h2 class="text-xl font-bold text-gray-800 mb-5">
+                Edit Category
+            </h2>
+
+
+            <!-- Category ID -->
+            <input
+                type="hidden"
+                id="editCategoryId"
+            >
+
+
+            <!-- Category Name -->
+            <input
+                type="text"
+                id="editCategoryName"
+                class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-5"
+                placeholder="Enter category name"
+            >
+
+
+            <!-- Modal Buttons -->
+            <div class="flex justify-end gap-3">
+
+                <!-- Cancel -->
+                <button
+                    type="button"
+                    onclick="closeEditCategoryModal()"
+                    class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
+                >
+                    Cancel
+                </button>
+
+
+                <!-- Update -->
+                <button
+                    type="button"
+                    onclick="updateCategory()"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                >
+                    Update Category
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ============================== -->
+    <!-- JavaScript -->
+    <!-- ============================== -->
+
+    <script>
+
+
+        // ========================================
+        // Admin Dropdown
+        // ========================================
+
+        function toggleAdminMenu() {
+
+            const menu = document.getElementById("adminMenu");
+
+            menu.classList.toggle("hidden");
+
+        }
+
+
+
+        // ========================================
+        // Add Category Modal
+        // ========================================
+
+        function openCategoryModal() {
+
+            document
+                .getElementById("categoryModal")
+                .classList
+                .remove("hidden");
+
+            document
+                .getElementById("newCategoryName")
+                .focus();
+
+        }
+
+
+        // Close Add Category Modal
+        function closeCategoryModal() {
+
+            document
+                .getElementById("categoryModal")
+                .classList
+                .add("hidden");
+
+            document
+                .getElementById("newCategoryName")
+                .value = "";
+
+        }
+
+
+
+        // ========================================
+        // Add Category
+        // ========================================
+
+        function addCategory() {
+
+            const name =
+                document
+                    .getElementById("newCategoryName")
+                    .value
+                    .trim();
+
+
+            // Check if category name is empty
+            if (!name) {
+
+                alert("Please enter a category name.");
+
+                return;
+
+            }
+
+
+            // Send category to the server
+            fetch("/admin/categories/create", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    name: name
+                })
+
+            })
+
+            .then(response => response.json())
+
+            .then(data => {
+
+
+                // Check if category was created
+                if (!data.success) {
+
+                    alert(data.message);
+
+                    return;
+
+                }
+
+
+                // Reload the page
+                window.location.reload();
+
+            })
+
+            .catch(error => {
+
+                console.error(error);
+
+                alert("Failed to add category.");
+
+            });
+
+        }
+
+
+
+        // ========================================
+        // Edit Category
+        // ========================================
+
+        function editCategory(id, name) {
+
+            document
+                .getElementById("editCategoryId")
+                .value = id;
+
+
+            document
+                .getElementById("editCategoryName")
+                .value = name;
+
+
+            document
+                .getElementById("editCategoryModal")
+                .classList
+                .remove("hidden");
+
+
+            document
+                .getElementById("editCategoryName")
+                .focus();
+
+        }
+
+
+
+        // ========================================
+        // Close Edit Category Modal
+        // ========================================
+
+        function closeEditCategoryModal() {
+
+            document
+                .getElementById("editCategoryModal")
+                .classList
+                .add("hidden");
+
+        }
+
+
+
+        // ========================================
+        // Update Category
+        // ========================================
+
+        function updateCategory() {
+
+            const id =
+                document
+                    .getElementById("editCategoryId")
+                    .value;
+
+
+            const name =
+                document
+                    .getElementById("editCategoryName")
+                    .value
+                    .trim();
+
+
+            // Check if category name is empty
+            if (!name) {
+
+                alert("Please enter a category name.");
+
+                return;
+
+            }
+
+
+            // Create a form for the update
+            const form = document.createElement("form");
+
+            form.method = "POST";
+
+            form.action = `/admin/categories/edit/${id}`;
+
+
+            // Add category name
+            const input = document.createElement("input");
+
+            input.type = "hidden";
+
+            input.name = "name";
+
+            input.value = name;
+
+            form.appendChild(input);
+
+
+            // Submit the form
+            document.body.appendChild(form);
+
+            form.submit();
+
+        }
+
+    </script>
+
+</body>
+
+</html>

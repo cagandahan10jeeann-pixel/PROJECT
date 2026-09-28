@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>My Profile - ShoeHub</title>
+
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- ============================== -->
+    <!-- Customer Navbar -->
+    <!-- ============================== -->
+
+    <nav class="bg-gray-900 text-white px-6 py-4">
+
+        <div class="flex justify-between items-center">
+
+            <!-- Logo -->
+            <a href="/" class="text-xl font-bold">
+                👟 SHOEHUB
+            </a>
+
+            <!-- Navigation -->
+            <div class="flex items-center gap-6">
+
+                <a href="/" class="hover:text-gray-300">
+                    Home
+                </a>
+
+                <a href="/shoes" class="hover:text-gray-300">
+                    Shoes
+                </a>
+
+                <a href="/cart" class="hover:text-gray-300">
+                    Cart
+                </a>
+
+                <a href="/orders" class="hover:text-gray-300">
+                    My Orders
+                </a>
+
+                <!-- Profile Dropdown -->
+                <div class="relative">
+
+                    <button
+                        type="button"
+                        onclick="toggleProfileMenu()"
+                        class="flex items-center gap-2 hover:text-gray-300">
+
+                        👤 <%= user.first_name %>
+
+                        <span>
+                            ▼
+                        </span>
+
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div
+                        id="profileMenu"
+                        class="hidden absolute right-0 mt-3 w-40 bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden">
+
+                        <a
+                            href="/profile"
+                            class="block px-4 py-3 hover:bg-gray-100">
+
+                            My Profile
+
+                        </a>
+
+                        <a
+                            href="/logout"
+                            class="block px-4 py-3 hover:bg-gray-100">
+
+                            Logout
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ============================== -->
+    <!-- Profile Content -->
+    <!-- ============================== -->
+
+    <div class="max-w-2xl mx-auto px-6 py-10">
+
+        <!-- Profile Card -->
+        <div class="bg-white rounded-xl shadow-md p-8">
+
+            <h1 class="text-2xl font-bold text-gray-800 mb-8">
+                My Profile
+            </h1>
+
+
+            <!-- First Name -->
+            <div class="mb-5">
+
+                <p class="font-semibold text-gray-700">
+                    First Name
+                </p>
+
+                <p class="text-gray-600 mt-1">
+                    <%= user.first_name %>
+                </p>
+
+            </div>
+
+
+            <!-- Last Name -->
+            <div class="mb-5">
+
+                <p class="font-semibold text-gray-700">
+                    Last Name
+                </p>
+
+                <p class="text-gray-600 mt-1">
+                    <%= user.last_name %>
+                </p>
+
+            </div>
+
+
+            <!-- Email -->
+            <div class="mb-5">
+
+                <p class="font-semibold text-gray-700">
+                    Email
+                </p>
+
+                <p class="text-gray-600 mt-1">
+                    <%= user.email %>
+                </p>
+
+            </div>
+
+
+            <!-- Role -->
+            <div class="mb-8">
+
+                <p class="font-semibold text-gray-700">
+                    Role
+                </p>
+
+                <p class="text-gray-600 mt-1">
+                    Customer
+                </p>
+
+            </div>
+
+
+            <!-- Edit Profile Button -->
+            <a
+                href="/profile/edit"
+                class="inline-block bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+
+                Edit Profile
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- Profile Dropdown JavaScript -->
+    <!-- ============================== -->
+
+    <script>
+
+        function toggleProfileMenu() {
+
+            const menu = document.getElementById("profileMenu");
+
+            menu.classList.toggle("hidden");
+
+        }
+
+    </script>
+
+</body>
+
+</html>

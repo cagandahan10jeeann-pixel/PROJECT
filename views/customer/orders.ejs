@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>My Orders - ShoeHub</title>
+
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- ============================== -->
+    <!-- Customer Navbar -->
+    <!-- ============================== -->
+
+    <nav class="bg-gray-900 text-white px-6 py-4">
+
+        <div class="flex justify-between items-center">
+
+            <!-- Logo -->
+            <a href="/" class="text-xl font-bold">
+                👟 SHOEHUB
+            </a>
+
+            <!-- Navigation -->
+            <div class="flex items-center gap-6">
+
+                <a href="/" class="hover:text-gray-300">
+                    Home
+                </a>
+
+                <a href="/shoes" class="hover:text-gray-300">
+                    Shoes
+                </a>
+
+                <a href="/cart" class="hover:text-gray-300">
+                    Cart
+                </a>
+
+                <a href="/orders" class="hover:text-gray-300">
+                    My Orders
+                </a>
+
+
+                <!-- Profile Dropdown -->
+                <% if (user) { %>
+
+                    <div class="relative">
+
+                        <button
+                            type="button"
+                            onclick="toggleProfileMenu()"
+                            class="flex items-center gap-2 hover:text-gray-300">
+
+                            👤 <%= user.first_name %>
+
+                            <span>
+                                ▼
+                            </span>
+
+                        </button>
+
+
+                        <!-- Dropdown -->
+                        <div
+                            id="profileMenu"
+                            class="hidden absolute right-0 mt-3 w-40 bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden">
+
+                            <a
+                                href="/profile"
+                                class="block px-4 py-3 hover:bg-gray-100">
+
+                                My Profile
+
+                            </a>
+
+                            <a
+                                href="/logout"
+                                class="block px-4 py-3 hover:bg-gray-100">
+
+                                Logout
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                <% } else { %>
+
+                    <!-- Logged-out links -->
+                    <a
+                        href="/login"
+                        class="hover:text-gray-300">
+
+                        Login
+
+                    </a>
+
+                    <a
+                        href="/register"
+                        class="hover:text-gray-300">
+
+                        Register
+
+                    </a>
+
+                <% } %>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ============================== -->
+    <!-- Orders Content -->
+    <!-- ============================== -->
+
+    <div class="max-w-5xl mx-auto px-6 py-10">
+
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">
+            My Orders
+        </h1>
+
+
+        <% if (orders.length === 0) { %>
+
+            <!-- No Orders -->
+            <div class="bg-white rounded-xl shadow-md p-10 text-center">
+
+                <p class="text-gray-600 text-lg mb-6">
+                    You have no orders yet.
+                </p>
+
+                <a
+                    href="/shoes"
+                    class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+
+                    Browse Shoes
+
+                </a>
+
+            </div>
+
+
+        <% } else { %>
+
+
+            <!-- Orders -->
+            <div class="space-y-5">
+
+                <% orders.forEach(order => { %>
+
+                    <div class="bg-white rounded-xl shadow-md p-6">
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+
+                            <!-- Order ID -->
+                            <div>
+
+                                <p class="text-sm text-gray-500 mb-1">
+                                    Order ID
+                                </p>
+
+                                <p class="text-lg font-bold text-gray-800">
+                                    #<%= order.id %>
+                                </p>
+
+                            </div>
+
+
+                            <!-- Date -->
+                            <div>
+
+                                <p class="text-sm text-gray-500 mb-1">
+                                    Date
+                                </p>
+
+                                <p class="text-gray-700">
+                                    <%= new Date(order.created_at).toLocaleDateString("en-PH") %>
+                                </p>
+
+                            </div>
+
+
+                            <!-- Total -->
+                            <div>
+
+                                <p class="text-sm text-gray-500 mb-1">
+                                    Total
+                                </p>
+
+                                <p class="text-lg font-semibold text-gray-800">
+
+                                    ₱<%= Number(order.total).toLocaleString("en-PH", {
+                                        minimumFractionDigits: 2
+                                    }) %>
+
+                                </p>
+
+                            </div>
+
+
+                            <!-- Status -->
+                            <div>
+
+                                <p class="text-sm text-gray-500 mb-1">
+                                    Status
+                                </p>
+
+                                <% if (order.status === "Pending") { %>
+
+                                    <span class="inline-block bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                                        Pending
+                                    </span>
+
+                                <% } else if (order.status === "Processing") { %>
+
+                                    <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                                        Processing
+                                    </span>
+
+                                <% } else if (order.status === "Shipped") { %>
+
+                                    <span class="inline-block bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                                        Shipped
+                                    </span>
+
+                                <% } else if (order.status === "Completed") { %>
+
+                                    <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                        Completed
+                                    </span>
+
+                                <% } else if (order.status === "Cancelled") { %>
+
+                                    <span class="inline-block bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
+                                        Cancelled
+                                    </span>
+
+                                <% } %>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- Profile Dropdown JavaScript -->
+    <!-- ============================== -->
+
+    <script>
+
+        function toggleProfileMenu() {
+
+            const menu = document.getElementById("profileMenu");
+
+            menu.classList.toggle("hidden");
+
+        }
+
+    </script>
+
+</body>
+
+</html>

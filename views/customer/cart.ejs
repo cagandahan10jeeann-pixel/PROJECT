@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>ShoeHub - Cart</title>
+
+</head>
+
+
+<body class="bg-gray-100 min-h-screen">
+
+
+    <!-- ============================= -->
+    <!-- Customer Navigation Bar -->
+    <!-- ============================= -->
+
+    <nav class="bg-gray-900 text-white px-6 py-4">
+
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+
+
+            <!-- ShoeHub Logo -->
+            <a
+                href="/"
+                class="text-xl font-bold"
+            >
+                👟 SHOEHUB
+            </a>
+
+
+            <!-- Navigation Links -->
+            <div class="flex items-center gap-6">
+
+
+                <!-- Home -->
+                <a
+                    href="/"
+                    class="hover:text-gray-300"
+                >
+                    Home
+                </a>
+
+
+                <!-- Shoes -->
+                <a
+                    href="/shoes"
+                    class="hover:text-gray-300"
+                >
+                    Shoes
+                </a>
+
+
+                <!-- Cart -->
+                <a
+                    href="/cart"
+                    class="hover:text-gray-300"
+                >
+                    Cart
+                </a>
+
+
+                <!-- My Orders -->
+                <a
+                    href="/orders"
+                    class="hover:text-gray-300"
+                >
+                    My Orders
+                </a>
+
+
+                <!-- ============================= -->
+                <!-- User Dropdown -->
+                <!-- ============================= -->
+
+                <% if (user) { %>
+
+                    <div class="relative">
+
+
+                        <!-- User Button -->
+                        <button
+                            type="button"
+                            onclick="toggleUserMenu()"
+                            class="flex items-center gap-2 hover:text-gray-300"
+                        >
+
+                            👤
+                            <%= user.first_name %>
+
+                            <span>
+                                ▼
+                            </span>
+
+                        </button>
+
+
+                        <!-- Dropdown Menu -->
+                        <div
+                            id="userMenu"
+                            class="hidden absolute right-0 mt-3 w-40 bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden"
+                        >
+
+
+                            <!-- My Profile -->
+                            <a
+                                href="/profile"
+                                class="block px-4 py-3 hover:bg-gray-100"
+                            >
+                                My Profile
+                            </a>
+
+
+                            <!-- Logout -->
+                            <a
+                                href="/logout"
+                                class="block px-4 py-3 hover:bg-gray-100"
+                            >
+                                Logout
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+                <% } %>
+
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ============================= -->
+    <!-- User Dropdown JavaScript -->
+    <!-- ============================= -->
+
+    <script>
+
+        // Show or hide the user dropdown menu
+        function toggleUserMenu() {
+
+            const menu = document.getElementById("userMenu");
+
+            menu.classList.toggle("hidden");
+
+        }
+
+    </script>
+
+
+
+    <!-- ============================= -->
+    <!-- Cart Section -->
+    <!-- ============================= -->
+
+    <div class="max-w-6xl mx-auto px-6 py-10">
+
+
+        <!-- Page Title -->
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">
+            Your Cart
+        </h1>
+
+
+        <% if (cartItems.length === 0) { %>
+
+
+            <!-- ============================= -->
+            <!-- Empty Cart -->
+            <!-- ============================= -->
+
+            <div class="bg-white rounded-xl shadow p-10 text-center">
+
+
+                <p class="text-gray-600 text-lg mb-6">
+                    Your cart is empty.
+                </p>
+
+
+                <a
+                    href="/shoes"
+                    class="inline-block bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-900"
+                >
+                    Browse Shoes
+                </a>
+
+
+            </div>
+
+
+        <% } else { %>
+
+
+            <!-- ============================= -->
+            <!-- Cart Table -->
+            <!-- ============================= -->
+
+            <div class="bg-white rounded-xl shadow overflow-hidden">
+
+
+                <div class="overflow-x-auto">
+
+
+                    <table class="w-full">
+
+
+                        <!-- Table Header -->
+                        <thead class="bg-gray-100">
+
+                            <tr>
+
+                                <th class="text-left px-6 py-4 text-gray-700">
+                                    Shoe
+                                </th>
+
+                                <th class="text-left px-6 py-4 text-gray-700">
+                                    Color
+                                </th>
+
+                                <th class="text-left px-6 py-4 text-gray-700">
+                                    Size
+                                </th>
+
+                                <th class="text-left px-6 py-4 text-gray-700">
+                                    Price
+                                </th>
+
+                                <th class="text-left px-6 py-4 text-gray-700">
+                                    Quantity
+                                </th>
+
+                                <th class="text-left px-6 py-4 text-gray-700">
+                                    Subtotal
+                                </th>
+
+                                <th class="text-left px-6 py-4 text-gray-700">
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <!-- Cart Items -->
+                        <tbody>
+
+
+                            <% cartItems.forEach(item => { %>
+
+
+                                <tr class="border-t border-gray-200">
+
+
+                                    <!-- ============================= -->
+                                    <!-- Shoe -->
+                                    <!-- ============================= -->
+
+                                    <td class="px-6 py-5">
+
+                                        <div class="flex items-center gap-4">
+
+
+                                            <!-- Product Image -->
+                                            <% if (item.image) { %>
+
+                                                <img
+                                                    src="/images/products/<%= item.image %>"
+                                                    alt="<%= item.name %>"
+                                                    class="w-20 h-20 object-cover rounded-lg"
+                                                >
+
+                                            <% } else { %>
+
+                                                <div class="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
+                                                    No Image
+                                                </div>
+
+                                            <% } %>
+
+
+                                            <!-- Product Name -->
+                                            <div>
+
+                                                <p class="font-semibold text-gray-900">
+                                                    <%= item.name %>
+                                                </p>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- ============================= -->
+                                    <!-- Color -->
+                                    <!-- ============================= -->
+
+                                    <td class="px-6 py-5 text-gray-700">
+
+                                        <%= item.color %>
+
+                                    </td>
+
+
+                                    <!-- ============================= -->
+                                    <!-- Size -->
+                                    <!-- ============================= -->
+
+                                    <td class="px-6 py-5 text-gray-700">
+
+                                        <%= item.size %>
+
+                                    </td>
+
+
+                                    <!-- ============================= -->
+                                    <!-- Price -->
+                                    <!-- ============================= -->
+
+                                    <td class="px-6 py-5 text-gray-700">
+
+                                        ₱<%= Number(item.price).toLocaleString("en-PH", {
+                                            minimumFractionDigits: 2
+                                        }) %>
+
+                                    </td>
+
+
+                                    <!-- ============================= -->
+                                    <!-- Quantity -->
+                                    <!-- ============================= -->
+
+                                    <td class="px-6 py-5">
+
+
+                                        <div class="flex items-center gap-2">
+
+
+                                            <!-- Decrease -->
+                                            <form
+                                                action="/cart/update"
+                                                method="POST"
+                                            >
+
+                                                <input
+                                                    type="hidden"
+                                                    name="cart_id"
+                                                    value="<%= item.id %>"
+                                                >
+
+                                                <input
+                                                    type="hidden"
+                                                    name="action"
+                                                    value="decrease"
+                                                >
+
+                                                <button
+                                                    type="submit"
+                                                    class="w-9 h-9 border border-gray-300 rounded-lg text-gray-700 font-bold hover:bg-gray-100"
+                                                >
+                                                    −
+                                                </button>
+
+                                            </form>
+
+
+                                            <!-- Current Quantity -->
+                                            <span class="w-10 text-center font-semibold text-gray-900">
+
+                                                <%= item.quantity %>
+
+                                            </span>
+
+
+                                            <!-- Increase -->
+                                            <form
+                                                action="/cart/update"
+                                                method="POST"
+                                            >
+
+                                                <input
+                                                    type="hidden"
+                                                    name="cart_id"
+                                                    value="<%= item.id %>"
+                                                >
+
+                                                <input
+                                                    type="hidden"
+                                                    name="action"
+                                                    value="increase"
+                                                >
+
+                                                <button
+                                                    type="submit"
+                                                    class="w-9 h-9 border border-gray-300 rounded-lg text-gray-700 font-bold hover:bg-gray-100"
+                                                >
+                                                    +
+                                                </button>
+
+                                            </form>
+
+
+                                        </div>
+
+
+                                        <!-- Available Stock -->
+                                        <p class="text-xs text-gray-500 mt-2">
+
+                                            Stock: <%= item.stock %>
+
+                                        </p>
+
+
+                                    </td>
+
+
+                                    <!-- ============================= -->
+                                    <!-- Subtotal -->
+                                    <!-- ============================= -->
+
+                                    <td class="px-6 py-5 font-semibold text-gray-900">
+
+                                        ₱<%= (
+                                            Number(item.price) *
+                                            Number(item.quantity)
+                                        ).toLocaleString("en-PH", {
+                                            minimumFractionDigits: 2
+                                        }) %>
+
+                                    </td>
+
+
+                                    <!-- ============================= -->
+                                    <!-- Remove -->
+                                    <!-- ============================= -->
+
+                                    <td class="px-6 py-5">
+
+
+                                        <form
+                                            action="/cart/remove"
+                                            method="POST"
+                                        >
+
+                                            <input
+                                                type="hidden"
+                                                name="cart_id"
+                                                value="<%= item.id %>"
+                                            >
+
+                                            <button
+                                                type="submit"
+                                                class="text-red-600 hover:text-red-800 hover:underline"
+                                            >
+                                                Remove
+                                            </button>
+
+                                        </form>
+
+
+                                    </td>
+
+
+                                </tr>
+
+
+                            <% }) %>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+
+                <!-- ============================= -->
+                <!-- Cart Total -->
+                <!-- ============================= -->
+
+                <div class="border-t border-gray-200 px-6 py-6 flex justify-between items-center">
+
+
+                    <span class="text-xl font-semibold text-gray-900">
+
+                        Total
+
+                    </span>
+
+
+                    <span class="text-2xl font-bold text-gray-900">
+
+                        ₱<%= cartItems.reduce(
+                            (total, item) =>
+                                total +
+                                (
+                                    Number(item.price) *
+                                    Number(item.quantity)
+                                ),
+                            0
+                        ).toLocaleString("en-PH", {
+                            minimumFractionDigits: 2
+                        }) %>
+
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- ============================= -->
+                <!-- Checkout -->
+                <!-- ============================= -->
+
+                <div class="px-6 pb-6 text-right">
+
+
+                    <a
+                        href="/checkout"
+                        class="inline-block bg-gray-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-900"
+                    >
+                        Checkout
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        <% } %>
+
+
+    </div>
+
+
+</body>
+
+</html>
